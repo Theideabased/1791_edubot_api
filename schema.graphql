@@ -1,0 +1,190 @@
+# EduBot GraphQL Schema
+# Educational content generation using Google Gemini AI
+
+# Scalar types
+scalar DateTime
+
+# Input types for mutations
+input SummarizeInput {
+  text: String!
+  api_key: String!
+  max_length: Int = 150
+}
+
+input ExplainInput {
+  concept: String!
+  api_key: String!
+  level: ExplanationLevel = INTERMEDIATE
+}
+
+input QuizInput {
+  topic: String
+  text: String
+  api_key: String!
+  num_questions: Int = 5
+  difficulty: QuizDifficulty = MEDIUM
+}
+
+input EducateInput {
+  topic: String!
+  api_key: String!
+  modules_count: Int = 5
+  include_pdf: Boolean = false
+}
+
+# Enum types
+enum ExplanationLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum QuizDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+# Output types
+type SummarizeResponse {
+  summary: String!
+  original_length: Int!
+  summary_length: Int!
+  provider_used: String!
+}
+
+type ExplainResponse {
+  explanation: String!
+  concept: String!
+  level: ExplanationLevel!
+  provider_used: String!
+}
+
+type QuizQuestion {
+  question: String!
+  options: [String!]!
+  correct_answer: Int!
+  explanation: String!
+}
+
+type QuizResponse {
+  questions: [QuizQuestion!]!
+  topic: String
+  difficulty: QuizDifficulty!
+  total_questions: Int!
+  provider_used: String!
+}
+
+type Module {
+  title: String!
+  description: String!
+  content: String!
+  key_points: [String!]!
+  estimated_duration: String!
+}
+
+type Syllabus {
+  topic: String!
+  overview: String!
+  modules: [ModuleInfo!]!
+  total_duration: String!
+  learning_objectives: [String!]!
+}
+
+type ModuleInfo {
+  title: String!
+  description: String!
+}
+
+type EducateResponse {
+  topic: String!
+  syllabus: Syllabus!
+  modules: [Module!]!
+  quiz: QuizResponse!
+  pdf_url: String
+  provider_used: String!
+  generated_at: DateTime!
+}
+
+type TopicItem {
+  id: ID!
+  topic: String!
+  created_at: DateTime!
+  provider_used: String!
+  modules_count: Int!
+}
+
+type TopicsResponse {
+  topics: [TopicItem!]!
+  total: Int!
+}
+
+type HealthCheck {
+  status: String!
+  message: String!
+  version: String!
+  timestamp: DateTime!
+}
+
+# Error types
+type Error {
+  code: String!
+  message: String!
+  details: String
+}
+
+# Union types for responses that might fail
+union SummarizeResult = SummarizeResponse | Error
+union ExplainResult = ExplainResponse | Error
+union QuizResult = QuizResponse | Error
+union EducateResult = EducateResponse | Error
+
+# Root types
+type Query {
+  # Health check
+  health: HealthCheck!
+  
+  # Get saved topics
+  topics: TopicsResponse!
+  
+  # Get specific topic by ID
+  topic(id: ID!): TopicItem
+  
+  # Get API information
+  apiInfo: APIInfo!
+}
+
+type Mutation {
+  # Summarize text
+  summarize(input: SummarizeInput!): SummarizeResult!
+  
+  # Explain concept
+  explain(input: ExplainInput!): ExplainResult!
+  
+  # Generate quiz
+  generateQuiz(input: QuizInput!): QuizResult!
+  
+  # Generate complete educational content
+  educate(input: EducateInput!): EducateResult!
+}
+
+type APIInfo {
+  name: String!
+  version: String!
+  description: String!
+  endpoints: [String!]!
+  features: [String!]!
+}
+
+# Subscription for real-time updates (optional)
+type Subscription {
+  # Subscribe to content generation progress
+  contentGeneration(topic: String!): ContentGenerationProgress!
+}
+
+type ContentGenerationProgress {
+  step: String!
+  progress: Int!
+  message: String!
+  completed: Boolean!
+}

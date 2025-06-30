@@ -1,0 +1,344 @@
+{
+  "info": {
+    "name": "EduBot API",
+    "description": "Complete RESTful API for generating educational materials using LLM providers (OpenAI, Gemini, Mistral)",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "openai_api_key",
+      "value": "your-openai-api-key-here",
+      "type": "string"
+    },
+    {
+      "key": "gemini_api_key",
+      "value": "your-gemini-api-key-here", 
+      "type": "string"
+    },
+    {
+      "key": "mistral_api_key",
+      "value": "your-mistral-api-key-here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root Endpoint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        },
+        "description": "Get API information and available endpoints"
+      }
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET", 
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Check API health status"
+      }
+    },
+    {
+      "name": "Summarize Text - OpenAI",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"Artificial Intelligence (AI) is a branch of computer science that aims to create intelligent machines that work and react like humans. Some of the activities computers with artificial intelligence are designed for include speech recognition, learning, planning, and problem-solving. AI is being used in various fields such as healthcare, finance, transportation, and entertainment. Machine learning, a subset of AI, enables computers to learn and improve from experience without being explicitly programmed.\",\n  \"provider\": \"openai\",\n  \"api_key\": \"{{openai_api_key}}\",\n  \"max_length\": 100\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/summarize",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "summarize"]
+        },
+        "description": "Summarize text using OpenAI"
+      }
+    },
+    {
+      "name": "Summarize Text - Gemini",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"Cloud computing is the delivery of computing services including servers, storage, databases, networking, software, analytics, and intelligence over the Internet to offer faster innovation, flexible resources, and economies of scale. You typically pay only for cloud services you use, helping lower your operating costs, run your infrastructure more efficiently and scale as your business needs change.\",\n  \"provider\": \"gemini\",\n  \"api_key\": \"{{gemini_api_key}}\",\n  \"max_length\": 80\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/summarize",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "summarize"]
+        },
+        "description": "Summarize text using Gemini"
+      }
+    },
+    {
+      "name": "Explain Concept - Beginner Level",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type", 
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"concept\": \"Machine Learning\",\n  \"level\": \"beginner\",\n  \"provider\": \"openai\",\n  \"api_key\": \"{{openai_api_key}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/explain",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "explain"]
+        },
+        "description": "Explain a concept at beginner level"
+      }
+    },
+    {
+      "name": "Explain Concept - Advanced Level",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw", 
+          "raw": "{\n  \"concept\": \"Neural Networks\",\n  \"level\": \"advanced\",\n  \"provider\": \"openai\",\n  \"api_key\": \"{{openai_api_key}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/explain",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "explain"]
+        },
+        "description": "Explain a concept at advanced level"
+      }
+    },
+    {
+      "name": "Generate Quiz - Topic Based",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic\": \"Python Programming Basics\",\n  \"provider\": \"openai\",\n  \"api_key\": \"{{openai_api_key}}\",\n  \"num_questions\": 5,\n  \"difficulty\": \"medium\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/quiz",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "quiz"]
+        },
+        "description": "Generate quiz based on a topic"
+      }
+    },
+    {
+      "name": "Generate Quiz - Text Based",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"The water cycle is the continuous movement of water on, above, and below the surface of the Earth. The water cycle involves the exchange of energy, which leads to temperature changes. When water evaporates, it takes up energy from its surroundings and cools the environment. When it condenses, it releases energy and warms the environment.\",\n  \"provider\": \"gemini\",\n  \"api_key\": \"{{gemini_api_key}}\",\n  \"num_questions\": 3,\n  \"difficulty\": \"easy\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/quiz",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "quiz"]
+        },
+        "description": "Generate quiz based on provided text"
+      }
+    },
+    {
+      "name": "Generate Education Content - OpenAI",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic\": \"Basics of Machine Learning\",\n  \"provider\": \"openai\",\n  \"api_key\": \"{{openai_api_key}}\",\n  \"modules_count\": 5,\n  \"include_pdf\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/educate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "educate"]
+        },
+        "description": "Generate complete educational content including syllabus, modules, and quiz"
+      }
+    },
+    {
+      "name": "Generate Education Content with PDF - Gemini",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic\": \"Introduction to Web Development\",\n  \"provider\": \"gemini\",\n  \"api_key\": \"{{gemini_api_key}}\",\n  \"modules_count\": 6,\n  \"include_pdf\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/educate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "educate"]
+        },
+        "description": "Generate educational content with PDF export"
+      }
+    },
+    {
+      "name": "Generate Education Content - Mistral",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic\": \"Data Science Fundamentals\",\n  \"provider\": \"mistral\",\n  \"api_key\": \"{{mistral_api_key}}\",\n  \"modules_count\": 4,\n  \"include_pdf\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/educate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "educate"]
+        },
+        "description": "Generate educational content using Mistral"
+      }
+    },
+    {
+      "name": "Get Saved Topics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/topics",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "topics"]
+        },
+        "description": "Get all saved/generated topics"
+      }
+    },
+    {
+      "name": "Download PDF",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/download/pdf/filename.pdf",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "download", "pdf", "filename.pdf"]
+        },
+        "description": "Download a generated PDF file (replace 'filename.pdf' with actual filename from educate response)"
+      }
+    },
+    {
+      "name": "API Documentation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/docs",
+          "host": ["{{base_url}}"],
+          "path": ["docs"]
+        },
+        "description": "Access Swagger UI documentation"
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Pre-request script to validate API keys",
+          "const openaiKey = pm.variables.get('openai_api_key');",
+          "const geminiKey = pm.variables.get('gemini_api_key');", 
+          "const mistralKey = pm.variables.get('mistral_api_key');",
+          "",
+          "if (pm.request.body && pm.request.body.raw) {",
+          "    const body = JSON.parse(pm.request.body.raw);",
+          "    if (body.provider === 'openai' && openaiKey === 'your-openai-api-key-here') {",
+          "        console.warn('Please set your OpenAI API key in the collection variables');",
+          "    }",
+          "    if (body.provider === 'gemini' && geminiKey === 'your-gemini-api-key-here') {",
+          "        console.warn('Please set your Gemini API key in the collection variables');",
+          "    }",
+          "    if (body.provider === 'mistral' && mistralKey === 'your-mistral-api-key-here') {",
+          "        console.warn('Please set your Mistral API key in the collection variables');",
+          "    }",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Test script to validate responses",
+          "pm.test('Status code is successful', function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+          "});",
+          "",
+          "pm.test('Response time is less than 30 seconds', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(30000);",
+          "});",
+          "",
+          "if (pm.response.code === 200) {",
+          "    pm.test('Response has JSON body', function () {",
+          "        pm.response.to.have.jsonBody();",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ]
+}
